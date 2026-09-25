@@ -1,0 +1,16 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head><meta charset="utf-8"><title>TaskForge</title></head>
+<body>
+<h1>Creer un compte</h1>
+<p th:if="${error}" th:text="${error}" style="color:#b91c1c"></p>
+<!-- A06 - aucun champ "role" : le role est fixe cote serveur (pas de mass assignment) -->
+<form method="post" th:action="@{/register}">
+  <p>Identifiant <input name="username"></p>
+  <p>Mot de passe <input type="password" name="password">
+     <br><small>12 caracteres minimum, avec majuscule, minuscule et chiffre.</small></p>
+  <p>IBAN <input name="iban"></p>
+  <button type="submit">S'inscrire</button>
+</form>
+</body>
+</html>

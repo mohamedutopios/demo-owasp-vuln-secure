@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ task["title"] }}</h1>
+<p>{{ task["description"] }}</p>
+<p><em>Proprietaire : {{ task["owner"] }}</em></p>
+
+<h2>Apercu d'un lien</h2>
+<form method="post" action="/tasks/{{ task['id'] }}/preview">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input name="url" placeholder="https://exemple.com">
+  <button class="primary" type="submit">Previsualiser</button>
+</form>
+
+<h2>Commentaires</h2>
+{% for c in comments %}
+  <div class="card"><strong>{{ c["author"] }}</strong><div>{{ c["body"] }}</div></div>
+{% endfor %}
+<form method="post" action="/tasks/{{ task['id'] }}/comment">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <textarea name="body" placeholder="Ajouter un commentaire"></textarea>
+  <button class="primary" type="submit">Commenter</button>
+</form>
+{% endblock %}

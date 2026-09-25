@@ -1,0 +1,11 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head><meta charset="utf-8"><title>TaskForge</title></head>
+<body>
+<nav><a href="/tasks">Mes taches</a></nav>
+<h1>Apercu</h1>
+<p>URL : <span th:text="${target}"></span></p>
+<!-- A05/A01 - on n'affiche que des metadonnees echappees, jamais le HTML distant -->
+<div style="border:1px solid #ccc;padding:8px" th:text="${content}"></div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Administration des comptes</h1>
+<table>
+  <tr><th>#</th><th>Identifiant</th><th>Role</th><th>IBAN</th><th></th></tr>
+  {% for u in users %}
+  <tr>
+    <td>{{ u["id"] }}</td><td>{{ u["username"] }}</td><td>{{ u["role"] }}</td><td>{{ u["iban"] }}</td>
+    <td>
+      <form method="post" action="/admin/users/{{ u['id'] }}/delete">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="primary">Supprimer</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

@@ -12,20 +12,20 @@ services:
     build: ./python/vulnerable
     ports: ["5050:5000"]   # hote 5050 (5000 est pris par le recepteur AirPlay de macOS)
 
-  # python-secure:
-  #   build: ./python/secure
-  #   ports: ["5001:5000"]
-  #   environment:
-  #     TASKFORGE_SECRET: "change-me-dev-secret-0123456789abcdef"
-  #     TASKFORGE_ENC_KEY: "cE9mZ0hJal9rTG1Ob1BxUnN0VXZXeFlaMDEyMzQ1Njc="
+  python-secure:
+    build: ./python/secure
+    ports: ["5001:5000"]
+    environment:
+      TASKFORGE_SECRET: "change-me-dev-secret-0123456789abcdef"
+      TASKFORGE_ENC_KEY: "cE9mZ0hJal9rTG1Ob1BxUnN0VXZXeFlaMDEyMzQ1Njc="
 
   java-vuln:
     build: ./java-spring/vulnerable
     ports: ["8080:8080"]
 
-  # java-secure:
-  #   build: ./java-spring/secure
-  #   ports: ["8081:8080"]
-  #   environment:
-  #     APP_ENC_PASSWORD: "change-me-dev-password"
-  #     APP_ENC_SALT: "5c0744940b5c369b5c0744940b5c369b"  # hex (16 octets)
+  java-secure:
+    build: ./java-spring/secure
+    ports: ["8081:8080"]
+    environment:
+      APP_ENC_PASSWORD: "change-me-dev-password"
+      APP_ENC_SALT: "5c0744940b5c369b5c0744940b5c369b"  # hex (16 octets)

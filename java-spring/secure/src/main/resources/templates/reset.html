@@ -1,0 +1,13 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head><meta charset="utf-8"><title>TaskForge</title></head>
+<body>
+<h1>Reinitialiser le mot de passe</h1>
+<!-- A06 - message identique quel que soit l'existence du compte (anti-enumeration) -->
+<p th:if="${message}" th:text="${message}"></p>
+<form method="post" th:action="@{/reset}">
+  <p>Adresse / identifiant <input name="email"></p>
+  <button type="submit">Envoyer</button>
+</form>
+</body>
+</html>

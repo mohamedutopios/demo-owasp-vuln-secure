@@ -1,0 +1,11 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head><meta charset="utf-8"><title>TaskForge</title></head>
+<body>
+<!-- A02/A10 - page d'erreur generique : aucun detail technique, aucune trace -->
+<h1>Erreur</h1>
+<p th:text="'Code ' + ${status}">Code</p>
+<p>Une erreur est survenue. Si le probleme persiste, contactez l'administrateur.</p>
+<p><a href="/tasks">Retour</a></p>
+</body>
+</html>

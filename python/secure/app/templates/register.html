@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Creer un compte</h1>
+{% if error %}<p class="err">{{ error }}</p>{% endif %}
+<form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Identifiant</label><input name="username">
+  <label>Mot de passe (12 car. min., Aa1)</label><input type="password" name="password">
+  <label>IBAN (facultatif, chiffre au repos)</label><input name="iban">
+  <button class="primary" type="submit">S'inscrire</button>
+</form>
+{% endblock %}

@@ -1,0 +1,19 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head><meta charset="utf-8"><title>TaskForge</title></head>
+<body>
+<h1>Connexion</h1>
+<p th:if="${param.error != null and param.error[0] == 'locked'}" style="color:#b91c1c">
+    Trop de tentatives. Reessayez dans quelques minutes.</p>
+<p th:if="${param.error != null and param.error[0] == 'true'}" style="color:#b91c1c">
+    Identifiants invalides.</p>
+<p th:if="${param.logout != null}" style="color:#166534">Vous etes deconnecte.</p>
+<!-- A08 - formulaire Thymeleaf : jeton CSRF injecte automatiquement -->
+<form method="post" th:action="@{/login}">
+  <p>Identifiant <input name="username" autocomplete="username"></p>
+  <p>Mot de passe <input type="password" name="password" autocomplete="current-password"></p>
+  <button type="submit">Se connecter</button>
+</form>
+<p><a href="/register">Creer un compte</a> - <a href="/reset">Mot de passe oublie ?</a></p>
+</body>
+</html>

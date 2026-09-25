@@ -1,0 +1,29 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="fr">
+<head><meta charset="utf-8"><title>TaskForge</title></head>
+<body>
+<nav>
+  <a href="/tasks">Mes taches</a>
+  <!-- A01 - lien d'administration visible uniquement pour le role ADMIN -->
+  <span sec:authorize="hasRole('ADMIN')"> | <a href="/admin/users">Administration</a></span>
+  |
+  <!-- A07 - deconnexion en POST (protegee CSRF) -->
+  <form method="post" th:action="@{/logout}" style="display:inline">
+    <button type="submit">Deconnexion</button>
+  </form>
+</nav>
+<h1>Taches de <span th:text="${user}"></span></h1>
+<form method="get" action="/tasks/search">
+  <input name="q" th:value="${q}" placeholder="Rechercher"><button type="submit">Rechercher</button>
+</form>
+<table border="1" cellpadding="6">
+  <tr><th>#</th><th>Titre</th><th>Proprietaire</th></tr>
+  <tr th:each="t : ${tasks}">
+    <td th:text="${t.id}"></td>
+    <td><a th:href="@{'/tasks/' + ${t.id}}" th:text="${t.title}"></a></td>
+    <td th:text="${t.owner}"></td>
+  </tr>
+</table>
+</body>
+</html>
