@@ -1,0 +1,15 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head><meta charset="utf-8"><title>TaskForge</title></head>
+<body>
+<h1>Connexion</h1>
+<p th:if="${error}" th:text="${error}" style="color:#b91c1c"></p>
+<form method="post" action="/login">
+  <p>Identifiant <input name="username"></p>
+  <p>Mot de passe <input type="password" name="password"></p>
+  <p><label><input type="checkbox" name="remember"> Se souvenir de moi</label></p>
+  <button type="submit">Se connecter</button>
+</form>
+<p><a href="/register">Creer un compte</a> - <a href="/reset">Mot de passe oublie ?</a></p>
+</body>
+</html>

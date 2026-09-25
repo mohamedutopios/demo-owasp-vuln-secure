@@ -1,0 +1,17 @@
+title = "TaskForge - regles gitleaks"
+# On repart des regles par defaut de gitleaks...
+[extend]
+useDefault = true
+
+# ... puis on ajoute des regles ciblant les secrets applicatifs du lab.
+[[rules]]
+id = "taskforge-app-secret"
+description = "Secret applicatif TaskForge code en dur"
+regex = '''(?i)(secret[_-]?key|app\.secret|SECRET_KEY)\s*[:=]\s*["']?[a-z0-9\-]{8,}["']?'''
+keywords = ["secret"]
+
+[[rules]]
+id = "taskforge-iban-clear"
+description = "IBAN stocke/expose en clair"
+regex = '''\bFR\d{2}[0-9A-Z]{20,}\b'''
+keywords = ["FR"]

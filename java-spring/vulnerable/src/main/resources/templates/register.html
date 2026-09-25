@@ -1,0 +1,14 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head><meta charset="utf-8"><title>TaskForge</title></head>
+<body>
+<h1>Creer un compte</h1>
+<form method="post" action="/register">
+  <p>Identifiant <input name="username"></p>
+  <p>Mot de passe <input type="password" name="password"></p>
+  <p>IBAN <input name="iban"></p>
+  <input type="hidden" name="role" value="USER">
+  <button type="submit">S'inscrire</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ task["title"] }}</h1>
+<p>{{ task["description"] }}</p>
+<p><em>Proprietaire : {{ task["owner"] }}</em></p>
+
+<h2>Apercu d'un lien</h2>
+<form method="post" action="/tasks/{{ task['id'] }}/preview">
+  <input name="url" placeholder="https://exemple.com">
+  <button type="submit">Previsualiser</button>
+</form>
+
+<h2>Commentaires</h2>
+{% for c in comments %}
+  <div class="card"><strong>{{ c["author"] }}</strong><div>{{ c["body"]|safe }}</div></div>
+{% endfor %}
+<form method="post" action="/tasks/{{ task['id'] }}/comment">
+  <textarea name="body" placeholder="Ajouter un commentaire"></textarea>
+  <button type="submit">Commenter</button>
+</form>
+{% endblock %}

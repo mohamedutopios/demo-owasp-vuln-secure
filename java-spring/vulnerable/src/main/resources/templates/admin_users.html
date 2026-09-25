@@ -1,0 +1,22 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head><meta charset="utf-8"><title>TaskForge</title></head>
+<body>
+<nav><a href="/tasks">Mes taches</a> | <a href="/logout">Deconnexion</a></nav>
+<h1>Administration des comptes</h1>
+<table border="1" cellpadding="6">
+  <tr><th>#</th><th>Identifiant</th><th>Role</th><th>IBAN</th><th></th></tr>
+  <tr th:each="u : ${users}">
+    <td th:text="${u.id}"></td>
+    <td th:text="${u.username}"></td>
+    <td th:text="${u.role}"></td>
+    <td th:text="${u.iban}"></td>
+    <td>
+      <form method="post" th:action="@{'/admin/users/' + ${u.id} + '/delete'}">
+        <button type="submit">Supprimer</button>
+      </form>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

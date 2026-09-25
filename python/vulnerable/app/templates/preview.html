@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Apercu</h1>
+<p>URL : {{ target }}</p>
+<div class="card">{{ content|safe }}</div>
+{% endblock %}

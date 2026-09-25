@@ -1,0 +1,24 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head><meta charset="utf-8"><title>TaskForge</title></head>
+<body>
+<nav><a href="/tasks">Mes taches</a> | <a href="/logout">Deconnexion</a></nav>
+<h1 th:text="${task.title}"></h1>
+<p th:text="${task.description}"></p>
+<p><em>Proprietaire : <span th:text="${task.owner}"></span></em></p>
+
+<h2>Apercu d'un lien</h2>
+<form method="post" th:action="@{'/tasks/' + ${task.id} + '/preview'}">
+  <input name="url" placeholder="https://exemple.com"><button type="submit">Previsualiser</button>
+</form>
+
+<h2>Commentaires</h2>
+<div th:each="c : ${comments}" style="border:1px solid #ccc;padding:8px;margin:6px 0">
+  <strong th:text="${c.author}"></strong>
+  <div th:utext="${c.body}"></div>
+</div>
+<form method="post" th:action="@{'/tasks/' + ${task.id} + '/comment'}">
+  <textarea name="body"></textarea><button type="submit">Commenter</button>
+</form>
+</body>
+</html>

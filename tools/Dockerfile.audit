@@ -1,0 +1,18 @@
+# TaskForge - boite a outils d'audit + exploitation
+# SAST/SCA : semgrep, bandit, pip-audit
+# Exploitation : sqlmap (injection SQL), flask-unsign (forge de session Flask)
+#
+# NB : pas d'apt-get ici. Ces outils scannent/attaquent sans avoir besoin de git ni
+# curl, et retirer l'etape apt evite les echecs de build lies aux miroirs Debian.
+FROM python:3.12-slim
+
+RUN pip install --no-cache-dir \
+    semgrep==1.178.0 \
+    bandit==1.9.4 \
+    pip-audit==2.10.1 \
+    sqlmap==1.9 \
+    flask-unsign==1.2.0 \
+    requests==2.32.3
+
+WORKDIR /work
+CMD ["/bin/bash"]

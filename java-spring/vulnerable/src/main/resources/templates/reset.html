@@ -1,0 +1,12 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head><meta charset="utf-8"><title>TaskForge</title></head>
+<body>
+<h1>Reinitialiser le mot de passe</h1>
+<p th:if="${message}" th:text="${message}"></p>
+<form method="post" action="/reset">
+  <p>Adresse / identifiant <input name="email"></p>
+  <button type="submit">Envoyer</button>
+</form>
+</body>
+</html>

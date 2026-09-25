@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Taches de {{ user["username"] }}</h1>
+<form method="get" action="/tasks/search">
+  <input name="q" value="{{ q or '' }}" placeholder="Rechercher une tache">
+  <button type="submit">Rechercher</button>
+</form>
+<table>
+  <tr><th>#</th><th>Titre</th><th>Proprietaire</th></tr>
+  {% for t in tasks %}
+  <tr><td>{{ t["id"] }}</td><td><a href="/tasks/{{ t['id'] }}">{{ t["title"] }}</a></td><td>{{ t["owner"] }}</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,143 @@
+rules:
+  # ---------------- A05 Injection ----------------
+  - id: taskforge-python-sql-taint
+    languages: [python]
+    severity: ERROR
+    message: "A05 Injection - donnee de requete HTTP concatenee dans une requete SQL."
+    metadata: {owasp: "A05:2025 Injection", cwe: "CWE-89"}
+    mode: taint
+    pattern-sources:
+      - pattern: request.args.get(...)
+      - pattern: request.args[...]
+      - pattern: request.form.get(...)
+      - pattern: request.form[...]
+    pattern-sinks:
+      - patterns:
+          - pattern: $DB.execute($SQL, ...)
+          - focus-metavariable: $SQL
+
+  # ---------------- A04 Cryptographic Failures ----------------
+  - id: taskforge-python-weak-hash-md5
+    languages: [python]
+    severity: ERROR
+    message: "A04 Cryptographic Failures - MD5 utilise pour un usage de securite."
+    metadata: {owasp: "A04:2025 Cryptographic Failures", cwe: "CWE-327"}
+    pattern: hashlib.md5(...)
+
+  - id: taskforge-python-hardcoded-secret
+    languages: [python]
+    severity: WARNING
+    message: "A04 Cryptographic Failures - secret code en dur dans le source."
+    metadata: {owasp: "A04:2025 Cryptographic Failures", cwe: "CWE-798"}
+    pattern-regex: '(SECRET_KEY|password|SECRET)\s*=\s*["''][^"'']{6,}["'']'
+
+  # ---------------- A08 Software & Data Integrity ----------------
+  - id: taskforge-python-insecure-deserialization
+    languages: [python]
+    severity: ERROR
+    message: "A08 Software & Data Integrity - desserialisation non securisee (pickle)."
+    metadata: {owasp: "A08:2025 Software and Data Integrity Failures", cwe: "CWE-502"}
+    pattern-either:
+      - pattern: pickle.loads(...)
+      - pattern: pickle.load(...)
+
+  # ---------------- A10 Mishandling of Exceptional Conditions ----------------
+  - id: taskforge-python-try-except-pass
+    languages: [python]
+    severity: WARNING
+    message: "A10 Mishandling of Exceptional Conditions - exception silencieuse (except: pass), la requete continue."
+    metadata: {owasp: "A10:2025 Mishandling of Exceptional Conditions", cwe: "CWE-703"}
+    pattern: |
+      try:
+        ...
+      except ...:
+        pass
+
+  # ---------------- A01 SSRF (sous Broken Access Control 2025) ----------------
+  - id: taskforge-python-ssrf-requests
+    languages: [python]
+    severity: ERROR
+    message: "A01 Broken Access Control (SSRF) - URL controlee par l'utilisateur passee a requests sans validation."
+    metadata: {owasp: "A01:2025 Broken Access Control (SSRF)", cwe: "CWE-918"}
+    patterns:
+      - pattern-either:
+          - pattern: requests.get($URL, ...)
+          - pattern: urllib.request.urlopen($URL, ...)
+      - pattern-not: requests.get("...", ...)
+      - pattern-not: requests.get(..., allow_redirects=False, ...)
+
+  # ---------------- A02 Security Misconfiguration ----------------
+  - id: taskforge-python-flask-debug
+    languages: [python]
+    severity: WARNING
+    message: "A02 Security Misconfiguration - Flask lance avec debug=True (console Werkzeug/RCE)."
+    metadata: {owasp: "A02:2025 Security Misconfiguration", cwe: "CWE-489"}
+    pattern: $APP.run(..., debug=True, ...)
+
+  - id: taskforge-python-cors-wildcard
+    languages: [python]
+    severity: WARNING
+    message: "A02 Security Misconfiguration - CORS ouvert a tout origine (*)."
+    metadata: {owasp: "A02:2025 Security Misconfiguration", cwe: "CWE-942"}
+    pattern-regex: 'Access-Control-Allow-Origin["'']\]\s*=\s*["'']\*["'']'
+
+  # ---------------- A03 Supply Chain (indice YAML full loader) ----------------
+  - id: taskforge-python-yaml-unsafe-load
+    languages: [python]
+    severity: WARNING
+    message: "A03/A08 - yaml.load sans SafeLoader (execution possible avec PyYAML < 5.4)."
+    metadata: {owasp: "A03:2025 Software Supply Chain Failures", cwe: "CWE-20"}
+    patterns:
+      - pattern: yaml.load($X)
+
+  # ================= JAVA =================
+  - id: taskforge-java-sql-taint
+    languages: [java]
+    severity: ERROR
+    message: "A05 Injection - parametre concatene dans une requete native JPA."
+    metadata: {owasp: "A05:2025 Injection", cwe: "CWE-89"}
+    mode: taint
+    pattern-sources:
+      - pattern: (String $Q)
+    pattern-sinks:
+      - patterns:
+          - pattern-either:
+              - pattern: $EM.createNativeQuery($SQL, ...)
+              - pattern: $EM.createQuery($SQL, ...)
+              - pattern: $EM.createQuery($SQL)
+          - focus-metavariable: $SQL
+
+  - id: taskforge-java-weak-hash-md5
+    languages: [java]
+    severity: ERROR
+    message: "A04 Cryptographic Failures - MessageDigest MD5."
+    metadata: {owasp: "A04:2025 Cryptographic Failures", cwe: "CWE-327"}
+    pattern-either:
+      - pattern: MessageDigest.getInstance("MD5")
+      - pattern: DigestUtils.md5DigestAsHex(...)
+      - pattern: DigestUtils.md5Hex(...)
+      - pattern: DigestUtils.sha1Hex(...)
+
+  - id: taskforge-java-insecure-deserialization
+    languages: [java]
+    severity: ERROR
+    message: "A08 Software & Data Integrity - ObjectInputStream sur donnee non fiable."
+    metadata: {owasp: "A08:2025 Software and Data Integrity Failures", cwe: "CWE-502"}
+    pattern: new ObjectInputStream(...)
+
+  - id: taskforge-java-ssrf
+    languages: [java]
+    severity: ERROR
+    message: "A01 Broken Access Control (SSRF) - ouverture d'URL controlee par l'utilisateur."
+    metadata: {owasp: "A01:2025 Broken Access Control (SSRF)", cwe: "CWE-918"}
+    mode: taint
+    pattern-sources:
+      - pattern: (String $U)
+    pattern-sinks:
+      - pattern: new RestTemplate().getForObject(...)
+      - pattern: $RT.getForObject(...)
+      - pattern: $RT.getForEntity(...)
+      - pattern: new URL(...).openStream()
+      - pattern: new URL(...).openConnection()
+    pattern-sanitizers:
+      - pattern: $RT.getForObject("...", ...)
